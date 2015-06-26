@@ -276,7 +276,15 @@ class StreamIO extends AbstractIO
         $write = null;
         $except = null;
 
-        return stream_select($read, $write, $except, $sec, $usec);
+        $result = @stream_select($read, $write, $except, $sec, $usec);
+        if ($result === false) {
+            $err = error_get_last();
+            if (isset($err['message']) && stripos($err['message'], 'interrupted system call')) {
+                return;// stream_select($read, $write, $except, $sec, $usec);
+            }
+            return false;
+        }
+        return $result;
     }
 
     /**
