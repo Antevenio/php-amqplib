@@ -877,7 +877,7 @@ class AbstractConnection extends AbstractChannel
     /**
      * @return \PhpAmqpLib\Wire\IO\AbstractIO
      */
-    protected function getIO()
+    public function getIO()
     {
         return $this->io;
     }

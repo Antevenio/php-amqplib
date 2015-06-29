@@ -230,7 +230,7 @@ class StreamIO extends AbstractIO
     /**
      * Sends a heartbeat message
      */
-    protected function write_heartbeat()
+    public function write_heartbeat()
     {
         $pkt = new AMQPWriter();
         $pkt->write_octet(8);
@@ -280,7 +280,7 @@ class StreamIO extends AbstractIO
         if ($result === false) {
             $err = error_get_last();
             if (isset($err['message']) && stripos($err['message'], 'interrupted system call')) {
-                return stream_select($read, $write, $except, $sec, $usec);
+                return @stream_select($read, $write, $except, $sec, $usec);
             }
             return false;
         }
