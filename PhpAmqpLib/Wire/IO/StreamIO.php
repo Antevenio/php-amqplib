@@ -207,18 +207,19 @@ class StreamIO extends AbstractIO
     /**
      * Heartbeat logic: check connection health here
      */
-    protected function check_heartbeat()
+    public function check_heartbeat()
     {
         // ignore unless heartbeat interval is set
         if ($this->heartbeat !== 0 && $this->last_read && $this->last_write) {
+
             $t = microtime(true);
             $t_read = round($t - $this->last_read);
             $t_write = round($t - $this->last_write);
 
             // server has gone away
-            if (($this->heartbeat * 2) < $t_read) {
-                $this->reconnect();
-            }
+//            if (($this->heartbeat * 2) < $t_read) {
+//                $this->reconnect();
+//            }
 
             // time for client to send a heartbeat
             if (($this->heartbeat / 2) < $t_write) {
@@ -230,7 +231,7 @@ class StreamIO extends AbstractIO
     /**
      * Sends a heartbeat message
      */
-    public function write_heartbeat()
+    protected function write_heartbeat()
     {
         $pkt = new AMQPWriter();
         $pkt->write_octet(8);
