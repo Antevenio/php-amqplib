@@ -278,6 +278,8 @@ class StreamIO extends AbstractIO
         $except = null;
 
         $result = @stream_select($read, $write, $except, $sec, $usec);
+        pcntl_signal_dispatch();
+
         if ($result === false) {
             $err = error_get_last();
             if (isset($err['message']) && stripos($err['message'], 'interrupted system call')) {
